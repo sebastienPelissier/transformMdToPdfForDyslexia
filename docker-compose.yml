@@ -1,7 +1,7 @@
 services:
   md-to-pdf:
-    image: dalibo/pandocker:latest
+    image: pandoc/latex:latest
     volumes:
-      - ./:/pandoc
-    working_dir: /pandoc
-    command: ["input.md", "-o", "output.pdf", "--template=template.tex", "--pdf-engine=xelatex"]
+      - ./:/data
+    working_dir: /data
+    command: ["${INPUT_FILE}", "-o", "${OUTPUT_FILE}", "--template=template.tex", "--pdf-engine=xelatex", "--variable=linkcolor:blue"]

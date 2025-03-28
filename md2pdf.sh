@@ -1,38 +1,48 @@
 #!/bin/bash
 
-# Check if a filename was provided
-if [ -z "$1" ]; then
-    echo "Error: No input file specified."
-    echo "Usage: ./md2pdf.sh input.md [output.pdf]"
+# Script to convert Markdown files to PDF with support for Mermaid diagrams
+# and using OpenDyslexic font for accessibility
+
+# Check if an input file was specified
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 input.md [output.pdf]"
     exit 1
 fi
 
 # Get the input filename
-INPUT_FILE="$1"
+input_file=$1
 
 # Check if the input file exists
-if [ ! -f "$INPUT_FILE" ]; then
-    echo "Error: Input file '$INPUT_FILE' not found."
+if [ ! -f "$input_file" ]; then
+    echo "Error: File $input_file does not exist."
     exit 1
 fi
 
 # Determine the output filename
-if [ -z "$2" ]; then
-    # If no output filename is provided, use the input filename with .pdf extension
-    OUTPUT_FILE="${INPUT_FILE%.md}.pdf"
+if [ "$#" -ge 2 ]; then
+    output_file=$2
 else
-    OUTPUT_FILE="$2"
+    # If no output filename is specified, use the same name with .pdf extension
+    output_file="${input_file%.*}.pdf"
 fi
 
-echo "Converting $INPUT_FILE to $OUTPUT_FILE..."
+# Create a temporary file for Mermaid preprocessing
+temp_file="${input_file%.*}-processed.md"
 
-# Update the docker-compose.yml file with the current filenames
-sed -i "s|command: .*|command: [\"$INPUT_FILE\", \"-o\", \"$OUTPUT_FILE\", \"--template=template.tex\", \"--pdf-engine=xelatex\"]|" docker-compose.yml
+echo "Converting $input_file to $output_file..."
 
-# Run the docker compose command with force-recreate to avoid container conflicts
+# Preprocess the file to convert Mermaid diagrams to images
+echo "Preprocessing Mermaid diagrams..."
+./mermaid-preprocessor.sh "$input_file" "$temp_file"
+
+# Set environment variables for docker-compose
+export INPUT_FILE="$temp_file"
+export OUTPUT_FILE="$output_file"
+
+# Run docker-compose for the conversion
 docker compose up --force-recreate
 
-# Clean up the container after conversion
+# Clean up after conversion
 docker compose down
 
-echo "Conversion complete. Output saved to $OUTPUT_FILE"
+echo "Conversion complete. Output saved to $output_file"

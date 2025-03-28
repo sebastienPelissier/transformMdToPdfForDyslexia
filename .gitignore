@@ -1,0 +1,7 @@
+*-processed.md
+mermaid-temp/*
+!mermaid-temp/.gitkeep
+!README.md
+mermaid-diagrams/*.png
+*.md
+*.pdf
