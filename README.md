@@ -46,9 +46,22 @@ To convert a Markdown file to PDF:
 ./md2pdf.sh summary.md custom-output.pdf
 ```
 
+## About OpenDyslexic
+
+[OpenDyslexic](https://opendyslexic.org/) is a free, open-source font designed to increase readability for readers with dyslexia. Key features include:
+
+- **Weighted Bottoms**: Letters have heavier weighted bottoms to help prevent them from flipping and swapping
+- **Unique Shapes**: Each letter has a unique shape, helping to prevent confusion between similar-looking letters
+- **Increased Letter Spacing**: More space between letters to reduce crowding effects
+- **High Readability**: Designed specifically to enhance readability and comprehension
+
+This font is particularly helpful for people with dyslexia, but can also improve reading comfort for anyone experiencing visual fatigue from extended reading.
+
+For more information, visit the [OpenDyslexic website](https://opendyslexic.org/) or their [GitHub repository](https://github.com/antijingoist/opendyslexic).
+
 ## Features
 
-- Uses the OpenDyslexic font family for improved readability
+- Uses the [OpenDyslexic](https://opendyslexic.org/) font family for improved readability
 - Converts Markdown to PDF using Pandoc via Docker
 - Customizable LaTeX template for PDF generation
 - Preserves formatting, links, and images from the Markdown source
