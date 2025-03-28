@@ -1,0 +1,7 @@
+services:
+  md-to-pdf:
+    image: dalibo/pandocker:latest
+    volumes:
+      - ./:/pandoc
+    working_dir: /pandoc
+    command: ["training_data_summary.md", "-o", "training_data_summary.pdf", "--template=template.tex", "--pdf-engine=xelatex"]
